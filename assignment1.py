@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 '''
-OPS435 Assignment 1 - Summer 2023
+OPS435 Assignment 1 - Fall 2024
 Program: assignment1.py 
-Author: "Student Name"
+Author: Mohamed Shaef
 The python code in this file (a1_mshaef.py) is original work written by
 "Mohamed Shaef". No code in this file is copied from any other source
 except those provided by the course instructor, including any person,
@@ -27,7 +27,18 @@ def day_of_week(year: int, month: int, date: int) -> str:
 
 def mon_max(month:int, year:int) -> int:
     "returns the maximum day for a given month. Includes leap year check"
-    ...
+
+    if month == 2: #february
+        return 29 if leap_year(year) else 28
+
+    elif month in [4, 6, 9, 11]: #Months with 30 days
+        return 30
+
+    elif month in [1, 3, 5, 7, 8, 10, 12]: #Months with 31 days
+        return 31
+    
+    else:
+        raise ValueError(f"Invalid Month. Month not 1-12.")
 
 def after(date: str) -> str:
     '''
@@ -45,18 +56,18 @@ def after(date: str) -> str:
 
  # Confirms if the day exceeds the maximum amount of days in a month
     if tmp_day > mon_max(month, year):
-        to_day = tmp_day % mon_max(month, year)  # if tmp_day > this month's max, reset to 1 
+        to_day = 1 # if tmp_day > this month's max, reset to 1 
         tmp_month = month + 1 # Goes to the next month in line
     else:
         to_day = tmp_day # Keeps the date the same 
-        tmp_month = month + 0 # Keeps the month the same
+        tmp_month = month # Keeps the month the same
 
 # Check if the next month is more then 12, after december the last month
     if tmp_month > 12: # If the month in greater then 12
         to_month = 1 # Move to month 1 (January)
-        year = year + 1 # Move to the next year
+        year += 1 # Move to the next year
     else:
-        to_month = tmp_month + 0 # If it doesnt exceed December then maintain
+        to_month = tmp_month # If it doesnt exceed December then maintain
 
     next_date = f"{year}-{to_month:02}-{to_day:02}" # For formatting the new date
 

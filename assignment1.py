@@ -4,8 +4,8 @@
 OPS435 Assignment 1 - Summer 2023
 Program: assignment1.py 
 Author: "Student Name"
-The python code in this file (a1_[Student_id].py) is original work written by
-"Student Name". No code in this file is copied from any other source
+The python code in this file (a1_mshaef.py) is original work written by
+"Mohamed Shaef". No code in this file is copied from any other source
 except those provided by the course instructor, including any person,
 textbook, or on-line resource. I have not shared this python script
 with anyone or anything except for submission for grading. I understand
@@ -37,28 +37,30 @@ def after(date: str) -> str:
     This function takes care of the number of days in February for leap year.
     This fucntion has been tested to work for year after 1582
     '''
-    str_year, str_month, str_day = date.split('-')
-    year = int(str_year)
-    month = int(str_month)
-    day = int(str_day)
+    str_year, str_month, str_day = date.split('-') # Creates a string for the input from the date for year, month, and day.
+    year = int(str_year) # Creates an integer for year string
+    month = int(str_month) # Creates an integer for month string
+    day = int(str_day) # Creates an integer for day string
     tmp_day = day + 1  # next day
 
+ # Confirms if the day exceeds the maximum amount of days in a month
     if tmp_day > mon_max(month, year):
         to_day = tmp_day % mon_max(month, year)  # if tmp_day > this month's max, reset to 1 
-        tmp_month = month + 1
+        tmp_month = month + 1 # Goes to the next month in line
     else:
-        to_day = tmp_day
-        tmp_month = month + 0
+        to_day = tmp_day # Keeps the date the same 
+        tmp_month = month + 0 # Keeps the month the same
 
-    if tmp_month > 12:
-        to_month = 1
-        year = year + 1
+# Check if the next month is more then 12, after december the last month
+    if tmp_month > 12: # If the month in greater then 12
+        to_month = 1 # Move to month 1 (January)
+        year = year + 1 # Move to the next year
     else:
-        to_month = tmp_month + 0
+        to_month = tmp_month + 0 # If it doesnt exceed December then maintain
 
-    next_date = f"{year}-{to_month:02}-{to_day:02}"
+    next_date = f"{year}-{to_month:02}-{to_day:02}" # For formatting the new date
 
-    return next_date
+    return next_date # Reply with the next date
 
 
 def usage():
@@ -68,7 +70,7 @@ def usage():
 
 def leap_year(year: int) -> bool:
     "return True if the year is a leap year"
-    ...
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
 def valid_date(date: str) -> bool:
     "check validity of date and return True if valid"

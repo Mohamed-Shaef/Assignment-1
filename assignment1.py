@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 '''
-OPS435 Assignment 1 - Fall 2024
+OPS445 Assignment 1 - Fall 2024
 Program: assignment1.py 
 Author: Mohamed Shaef
-The python code in this file (a1_mshaef.py) is original work written by
+The python code in this file (assignment1.py) is original work written by
 "Mohamed Shaef". No code in this file is copied from any other source
 except those provided by the course instructor, including any person,
 textbook, or on-line resource. I have not shared this python script
@@ -28,7 +28,7 @@ def day_of_week(year: int, month: int, date: int) -> str:
 def mon_max(month:int, year:int) -> int:
     "returns the maximum day for a given month. Includes leap year check"
 
-    if month == 2: #february
+    if month == 2: # february
         return 29 if leap_year(year) else 28
 
     elif month in [4, 6, 9, 11]: #Months with 30 days
@@ -38,7 +38,7 @@ def mon_max(month:int, year:int) -> int:
         return 31
     
     else:
-        raise ValueError(f"Invalid Month. Month not 1-12.")
+        raise ValueError(f"Invalid Month. Month not 1-12.") #Checks for errors
 
 def after(date: str) -> str:
     '''
@@ -75,28 +75,33 @@ def after(date: str) -> str:
 
 
 def usage():
-    "Print a usage message to the user"
-    ...
+    
+    "Print a usage message to the user and exit."
+
+    print("Usage: assignment1.py YYYY-MM-DD YYYY-MM-DD") # demonstrates the output
+    sys.exit(1)
 
 
 def leap_year(year: int) -> bool:
     "return True if the year is a leap year"
-    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0) # checks for leap years
 
 def valid_date(date: str) -> bool:
     "Check validity of date and return True if valid"
+
     try:
+        # Splits the input date into day, month, year
         str_year, str_month, str_day = date.split('-')
-        year = int(str_year)
-        month = int(str_month)
-        day = int(str_day)
+        year = int(str_year) # year string to integer
+        month = int(str_month) # month string to integer
+        day = int(str_day) # day string into integer
 
-        if month < 1 or month > 12:
+        if month < 1 or month > 12: # ensures that the month is not less than 1 or greater then 12
             return False
-        if day < 1 or day > mon_max(month, year):
+        if day < 1 or day > mon_max(month, year): # ensures that the day is not less than 1 or greater of the amount of days in the month they specified
             return False
 
-        if len(str_year) != 4 or len(str_month) != 2 or len(str_day) != 2:
+        if len(str_year) != 4 or len(str_month) != 2 or len(str_day) != 2: # ensures that the format the user uses is correct and aligns
             return False
 
         return True
@@ -108,27 +113,55 @@ def valid_date(date: str) -> bool:
 
 def day_count(start_date: str, stop_date: str) -> int:
     "Loops through range of dates, and returns number of weekend days"
+
+    # Starts the counter for weekend days
     weekend_days = 0
     
-    if not valid_date(start_date) or not valid_date(stop_date):
-        raise ValueError("Invalid dates provided")
+    if not valid_date(start_date) or not valid_date(stop_date): # Returns and error to the user if the start date or stop date they provided is incorrect
+        raise ValueError("Invalid dates provided") # Returns the incorrect start or stop date error
     
+    # Swaps the dates if the start date is greater than the stop provided
     if start_date > stop_date:
         start_date, stop_date = stop_date, start_date  
-
-    current_date = start_date
+    
+    #sets the current date as the start date
+    current_date = start_date 
+    
+    # Checks every day in the range of start to stop
     while current_date <= stop_date:
 
-        year, month, day = map(int, current_date.split('-'))
+        year, month, day = map(int, current_date.split('-')) # Checks what the year month and day of current date are 
         
-        weekday = day_of_week(year, month, day)
+        weekday = day_of_week(year, month, day) # Determines the day of the week for the current_date
         
-        if weekday in ['sat', 'sun']:
-            weekend_days += 1
+        if weekday in ['sat', 'sun']: #Checks if its a weekend day
+            weekend_days += 1 #adds to the counter of weekend days
         
-        current_date = after(current_date)
+        current_date = after(current_date) # Resumes to the next day
     
-    return weekend_days
+    return weekend_days # Returns the amount of weekend days after checking all the dates in the range
 
 if __name__ == "__main__":
-    ...
+
+    # Checks how many arugments the user provides
+    if len(sys.argv) != 3:
+        usage() # Shows the user the usage method if the argument is incorrect
+
+
+    start_date = sys.argv[1].strip() # The start date is first arguement
+    stop_date = sys.argv[2].strip() # The stop date is the second argument
+
+    # Checks if the start date and stop date are valid
+    if not valid_date(start_date) or not valid_date(stop_date):
+        usage() # If the start date and/or stop date are not valid then it shows the usage method 
+
+    # Checks if the start date is greater then the stop date
+    if start_date > stop_date:
+        start_date, stop_date = stop_date, start_date # If the start date is greater than the stop date it will swap the dates
+
+
+    weekends = day_count(start_date, stop_date) # the variable weekends is equal to the amount from day_count from start_date and stop_date 
+
+
+    print(f"The period between {start_date} and {stop_date} includes {weekends} weekend days.") # Prints to the user the amount of weekends
+
